@@ -1,5 +1,5 @@
 /*
- * NodeMCU Web Server
+ * NodeMCU Web Server ile LED Kontrol
  * Mehmet SUTCU <info@mehmetsutcu.com> 2017 
  * Cirak Dergisi <www.cirakdergi.com>
  * Konfigurasyon: NodeMCU 1.0(ESP-12E Module), 80 MHz(tercihen 160 MHz), 921600 Upload Speed, 4M(3M SPIFFS)
@@ -7,11 +7,11 @@
 
 #include <ESP8266WiFi.h>
  
-const char* ssid = "KablosuzAgAdi";
-const char* password = "KablosuzAgSifresi";
+const char* ssid = "KablosuzAgAdi"; // Cihazin baglanacagi kablosuz agin adini
+const char* password = "KablosuzAgSifresi"; // ve sifresini bu kisma yaziyoruz.
  
 int ledPin = 5; // LED'in D1(5) pinine bagli oldugunu belirtiyoruz.
-WiFiServer server(80); // Web sunucunun portunu belirliyoruz.
+WiFiServer server(80);
  
 void setup() {
   Serial.begin(115200);
@@ -20,11 +20,11 @@ void setup() {
   pinMode(ledPin, OUTPUT);
   digitalWrite(ledPin, LOW);
  
-  // Connect to WiFi network
+  // Kablosuz aga baglan.
   Serial.println();
   Serial.println();
-  Serial.println(ssid);
-  Serial.print(" agina baglaniliyor...");
+  Serial.print(ssid);
+  Serial.println(" agina baglaniliyor...");
   
  
   WiFi.begin(ssid, password);
@@ -40,12 +40,13 @@ void setup() {
   server.begin();
   Serial.println("Web Server calisiyor.");
  
-  // Print the IP address
-  Serial.print("Baglanmak icin su linki kullanin: ");
+  // Baglanti bilgilerini goster.
+  Serial.print("Baglanmak icin su linki kopyalayin: ");
   Serial.print("http://");
   Serial.print(WiFi.localIP());
   Serial.println("/");
- 
+  Serial.print("Adresi kopyalamak icin Ctrl+C kombinasyonunu kullanin.");
+  
 }
  
 void loop() {
@@ -77,7 +78,7 @@ void loop() {
     value = LOW;
   }
  
-  // Cevap ver.
+  // Gelen veriye cevap ver.
   client.println("HTTP/1.1 200 OK");
   client.println("Content-Type: text/html");
   client.println("");
@@ -97,7 +98,7 @@ void loop() {
   client.println("</html>");
  
   delay(1);
-  Serial.println("Istemci baglantiyi sonlandirdi.");
+  Serial.println("Istenen islem basariyla gerceklestirildi.");
   Serial.println("");
  
 }
